@@ -327,23 +327,22 @@
       const associacaoSalva = localStorage.getItem("quiz_associacao") || "N/A";
 
       // Envia os dados para o seu endpoint do Google Apps Script Web App
-      const formspreeEndpoint = 'https://script.google.com/macros/s/AKfycbw_e3g1gOsohyXy2hR5m4R9BmqfDGrxHwy9lsk8c2nH4g7Gd2U1TnkKIq_La9OCztTCkw/exec'; // SUBSTITUA PELA SUA URL
+            const scriptEndpoint = 'https://script.google.com/macros/s/AKfycbyv_gBj93aBn-r71oEeY4iMeleNRYuHfXb1oIYXu5cZ7c4BNMM0WakJOUZCTO_3nYaQAg/exec'; // Substitua pela URL final da sua implantação
 
-      // Observação: A URL acima é para o seu Google Apps Script.
-      // Certifique-se de que esta é a URL correta da "Implantação do App da Web" após reimplantar seu script do Google.
-      fetch(formspreeEndpoint, {
+      fetch(scriptEndpoint, {
         method: 'POST',
+        mode: 'cors', // garante o uso correto de CORS
         headers: {
-          'Content-Type': 'application/json',
-          // 'Accept': 'application/json' // Opcional, Content-Type é o mais importante aqui para a requisição
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           Nome: nomeSalvo,
-          Afiliação: afiliacaoSalva, // Mantendo o acento para consistência com o placeholder
-          Associação: associacaoSalva, // Mantendo o acento
+          Afiliação: afiliacaoSalva,
+          Associação: associacaoSalva,
           Pontuação: `${pontuacao}/${totalPossivel}`
         })
       })
+
       .then(response => {
         // Verifica se a resposta da rede foi bem-sucedida
         if (!response.ok) {
