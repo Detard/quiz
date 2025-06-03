@@ -329,14 +329,14 @@
       // Envia os dados para o seu endpoint do Google Apps Script Web App
       const formspreeEndpoint = 'https://script.google.com/macros/s/AKfycbwl3Wvxvam7UFjZaaOSViSQTAHOjX65nqQ1q0sATudOqVCdVQwW0UOHG0ELbCNIKKX3XA/exec'; // SUBSTITUA PELA SUA URL
 
+      // Observação: A URL acima é para o seu Google Apps Script.
+      // Certifique-se de que esta é a URL correta da "Implantação do App da Web" após reimplantar seu script do Google.
       fetch(formspreeEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json' // Adicionado para melhor compatibilidade com Formspree
+          // 'Accept': 'application/json' // Opcional, Content-Type é o mais importante aqui para a requisição
         },
-        // O Google Apps Script espera os dados como uma string no corpo,
-        // não necessariamente como um objeto JSON nomeado 'body' dentro de outro objeto.
         body: JSON.stringify({
           Nome: nomeSalvo,
           Afiliação: afiliacaoSalva, // Mantendo o acento para consistência com o placeholder
@@ -344,12 +344,25 @@
           Pontuação: `${pontuacao}/${totalPossivel}`
         })
       })
-      .then(response => response.json()) // Processa a resposta JSON do Google Apps Script
+      .then(response => {
+        // Verifica se a resposta da rede foi bem-sucedida
+        if (!response.ok) {
+          // Se não estiver ok, tenta analisar a resposta de erro do Google Apps Script se for JSON
+          return response.json().then(errData => {
+            // Lança um erro com a mensagem do script ou um erro genérico do servidor
+            throw new Error(errData.message || `Erro do servidor: ${response.status}`);
+          }).catch(() => {
+            // Se a análise da resposta de erro falhar (ex: não for JSON), lança um erro HTTP genérico
+            throw new Error(`Erro HTTP! Status: ${response.status}`);
+          });
+        }
+        return response.json(); // Processa a resposta JSON do Google Apps Script
+      })
       .then(data => {
         if (data.result === "success") {
           console.log('Dados enviados com sucesso para Google Sheets:', data);
         } else {
-          console.error('Erro ao enviar dados para Google Sheets (resposta do script):', data.error);
+          console.error('Erro ao enviar dados para Google Sheets (resposta do script):', data.message || 'Erro desconhecido retornado pelo script.');
         }
       })
       .catch(error => console.error('Erro na requisição fetch para Google Sheets:', error));
