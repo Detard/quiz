@@ -52,6 +52,15 @@
       font-size: 2em;
     }
 
+    #quiz-logo {
+      max-width: 550px; /* Tamanho máximo para desktop */
+      margin-bottom: 20px;
+      border-radius: 15px;
+      display: block; /* Para garantir que margin auto funcione se necessário, e consistência */
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .question {
       font-size: 20px;
       margin: 20px 0;
@@ -154,6 +163,10 @@
         font-size: 1.1em;
         padding: 14px 10px;
       }
+      #quiz-logo {
+        max-width: 300px; /* Tamanho máximo para mobile, ajuste conforme necessário */
+      }
+
 
       .question {
         font-size: 1.2em;
@@ -172,6 +185,7 @@
 <body>
 
 <div class="intro" id="intro">
+  <img src="images/logo.png" alt="Logo" id="quiz-logo">
   <h1>Quiz de Energia e Mineração</h1>
   <input id="nome" type="text" placeholder="Nome*">
   <input id="afiliacao" type="text" placeholder="Cargo">
@@ -191,7 +205,7 @@
   <h2>Resultado do Quiz</h2>
   <div id="final-message"></div>
   <div id="final-score"></div>
-  <button onclick="restartQuiz()">Jogar Novamente</button>
+  <button onclick="restartQuiz()">Próximo Jogador</button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -415,7 +429,7 @@
     setTimeout(() => {
       indiceAtual++;
       mostrarPergunta();
-    }, 2500);
+    }, 1500);
   }
 
   function verificarResposta(divSelecionada, index) {
@@ -448,7 +462,7 @@
     setTimeout(() => {
       indiceAtual++;
       mostrarPergunta();
-    }, 2500);
+    }, 1500);
   }
 
   function restartQuiz() {
