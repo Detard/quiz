@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz de Energia e Sustentabilidade</title>
+  <title>Quiz de Energia e Mineração</title>
   <style>
     * {
       box-sizing: border-box;
@@ -172,7 +172,7 @@
 <body>
 
 <div class="intro" id="intro">
-  <h1>Quiz de Energia e Sustentabilidade</h1>
+  <h1>Quiz de Energia e Mineração</h1>
   <input id="nome" type="text" placeholder="Nome*">
   <input id="afiliacao" type="text" placeholder="Cargo">
   <input id="associacao" type="text" placeholder="Associação">
@@ -348,42 +348,6 @@
         // alert("Erro de conexão com o banco de dados. Sua pontuação pode não ter sido salva.");
       }
       // ***** FIM DA MODIFICAÇÃO PARA FIREBASE *****
-
-      /*
-      // Código original para Google Apps Script - Comentado para referência
-      const scriptEndpoint = 'https://script.google.com/macros/s/AKfycbzFuKS_2XvR9RoAI6uWJYGqXOIOgXQfXBJ13cJvbZloxuPmUDkBC5cVA_yTlxx_XBPpAQ/exec';
-      fetch(scriptEndpoint, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          Nome: nomeSalvo,
-          Afiliação: afiliacaoSalva,
-          Associação: associacaoSalva,
-          Pontuação: `${pontuacao}/${totalPossivel}`
-        })
-      })
-      .then(response => {
-        if (!response.ok) {
-          return response.json().then(errData => {
-            throw new Error(errData.message || `Erro do servidor: ${response.status}`);
-          }).catch(() => {
-            throw new Error(`Erro HTTP! Status: ${response.status}`);
-          });
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.result === "success") {
-          console.log('Dados enviados com sucesso para Google Sheets:', data);
-        } else {
-          console.error('Erro ao enviar dados para Google Sheets (resposta do script):', data.message || 'Erro desconhecido retornado pelo script.');
-        }
-      })
-      .catch(error => console.error('Erro na requisição fetch para Google Sheets:', error));
-      */
       return;
     }
 
