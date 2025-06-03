@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz de Energia e Sustentabilidade</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #2f3e50;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .intro, .quiz-container, .results-container { /* Added .results-container here for consistency */
+      max-width: 600px;
+      margin: auto;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 12px; /* Increased padding for better tap area */
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px 10px; /* 12px vertical, 10px horizontal for better tap height */
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      background: #1e81b0;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    h1 {
+      font-size: 2em; /* Default size for larger screens */
+    }
+
+    .question {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option {
+      padding: 15px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.4s ease, opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease; /* Added transform for potential future use, or just keep opacity/visibility */
+    }
+
+    .option:nth-child(1) { background-color: #4074ac; }
+    .option:nth-child(2) { background-color: #439ca5; }
+    .option:nth-child(3) { background-color: #f0ac2c; }
+    .option:nth-child(4) { background-color: #ce576f; }
+    .option:nth-child(5) { background-color: #984494; }
+
+    .option.correct {
+      background-color: green !important;
+    }
+
+    .option.wrong {
+      background-color: red !important;
+    }
+
+    .option.disabled {
+      pointer-events: none;
+    }
+
+    /* Classe para esconder suavemente sem colapsar o espaço */
+    .option.fade-out {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    /* Estilos para a nova seção de resultados */
+    .results-container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: #3a4b5c; /* Cor de fundo diferente para destacar */
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .results-container h2 {
+      margin-top: 0;
+      color: #f0ac2c; /* Cor de destaque */
+    }
+
+    #final-message { font-size: 18px; margin-bottom: 15px; }
+    #final-score { font-size: 20px; font-weight: bold; margin-bottom: 20px; }
+
+    #timer {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    #timer {
+  width: 100%;
+  height: 20px;
+  background-color: #444;
+  border-radius: 10px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+#timer-bar {
+  height: 100%;
+  width: 100%;
+  background-color: #f0ac2c;
+  transition: width 0.1s linear;
+}
+
+    /* Media Query for smaller screens */
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+        font-size: 14px; /* Adjust base font size for smaller screens */
+      }
+
+      .intro, .quiz-container, .results-container {
+        width: 95%; /* Allow containers to use more screen width */
+        padding: 15px; /* Adjust padding within containers */
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+
+      h1 {
+        font-size: 1.8em; /* Adjust heading size (1.8 * 14px = 25.2px) */
+      }
+
+      input {
+        font-size: 1em; /* 14px */
+        padding: 12px;
+      }
+
+      button {
+        font-size: 1.1em; /* ~15.4px */
+        padding: 14px 10px; /* Make button a bit taller */
+      }
+
+      .question {
+        font-size: 1.2em; /* ~16.8px */
+      }
+
+      .option {
+        font-size: 1em; /* 14px */
+        padding: 14px; /* Ensure good tap height */
+      }
+
+      #final-message { font-size: 1.1em; } /* ~15.4px */
+      #final-score { font-size: 1.2em; font-weight: bold; } /* ~16.8px */
+    }
+  </style>
+</head>
+<body>
+
+<div class="intro" id="intro">
+  <h1>Quiz de Energia e Sustentabilidade</h1>
+  <input id="nome" type="text" placeholder="Nome*">
+  <input id="afiliacao" type="text" placeholder="Cargo">
+  <input id="associacao" type="text" placeholder="Associação">
+  <button onclick="startQuiz()">Iniciar Quiz</button>
+</div>
+
+<div class="quiz-container hidden" id="quiz">
+  <div id="pergunta" class="question"></div>
+  <div class="options" id="opcoes"></div>
+  <div id="timer">
+  <div id="timer-bar"></div>
+</div>
+</div>
+
+<div class="results-container hidden" id="results-container">
+  <h2>Resultado do Quiz</h2>
+  <div id="final-message"></div>
+  <div id="final-score"></div>
+  <button onclick="restartQuiz()">Jogar Novamente</button>
+</div>
+
+<script>
+  const perguntas = [
+    {
+      texto: "Por que transmitir energia em alta tensão?",
+      opcoes: [
+        "Aumenta a velocidade",
+        "Evita perdas por calor",
+        "É mais segura",
+        "Usa cabos baratos",
+        "Facilita o consumo direto pelas residências"
+      ],
+      correta: 1 // Índice da resposta correta (b)
+    },
+    {
+      texto: "Para que servem as subestações?",
+      opcoes: [
+        "Armazenar energia",
+        "Gerar eletricidade",
+        "Ajustar a tensão",
+        "Trocar corrente",
+        "Purificar a energia de impurezas"
+      ],
+      correta: 2 // Índice da resposta correta (c)
+    },
+    {
+      texto: "O que avaliar ao planejar uma usina?",
+      opcoes: [
+        "Cor da vegetação",
+        "Proximidade da empresa",
+        "Impacto ambiental e social",
+        "Clube dos engenheiros",
+        "Apenas o custo inicial de construção"
+      ],
+      correta: 2 // Índice da resposta correta (c)
+    },
+    {
+      texto: "Qual o papel dos minerais na transição energética?",
+      opcoes: [
+        "Gerar energia diretamente a partir de sua combustão",
+        "Aumentar o consumo de energia em indústrias",
+        "Fabricar tecnologias como baterias e painéis solares",
+        "Reduzir o uso de água nas usinas",
+        "Substituir combustíveis fósseis nas usinas"
+      ],
+      correta: 0 // Índice da resposta correta (a) - conforme sua indicação.
+                 // Se a intenção era "Fabricar tecnologias...", seria o índice 2.
+    },
+    {
+      texto: "Qual desses minerais é essencial para a fabricação de baterias recarregáveis em veículos elétricos?",
+      opcoes: [
+        "Urânio",
+        "Lítio",
+        "Carvão",
+        "Ferro",
+        "Quartzo"
+      ],
+      correta: 1 // Índice da resposta correta (b)
+    }
+  ];
+
+  let indiceAtual = 0;
+  let tempoRestante = 10;
+  let cronometro;
+  let pontuacao = 0;
+
+  function startQuiz() {
+    const nome = document.getElementById("nome").value.trim();
+    const afiliacao = document.getElementById("afiliacao").value.trim();
+    const associacao = document.getElementById("associacao").value.trim(); // Captura o valor da associação
+
+    if (!nome) {
+      alert("Por favor, digite seu nome.");
+      return;
+    }
+
+    localStorage.setItem("quiz_nome", nome);
+    localStorage.setItem("quiz_afiliacao", afiliacao);
+    localStorage.setItem("quiz_associacao", associacao); // Salva a associação no localStorage
+
+    document.getElementById("intro").classList.add("hidden");
+    document.getElementById("quiz").classList.remove("hidden");
+
+    pontuacao = 0; // Garante que a pontuação é zerada ao iniciar
+    mostrarPergunta();
+  }
+
+  function mostrarPergunta() {
+    if (indiceAtual >= perguntas.length) {
+      clearInterval(cronometro); // Parar o cronômetro ao final
+
+      const quizContainer = document.getElementById("quiz");
+      const resultsContainer = document.getElementById("results-container");
+      const finalMessageDiv = document.getElementById("final-message");
+      const finalScoreDiv = document.getElementById("final-score");
+      let mensagemFinal = "";
+
+      if (pontuacao === 0) {
+        mensagemFinal = "Ops! Parece que houve um apagão no placar.";
+      } else if (pontuacao === 20) {
+        mensagemFinal = "Você energizou uma lâmpada! Um começo brilhante!";
+      } else if (pontuacao === 40) {
+        mensagemFinal = "Você forneceu energia para uma casa! Seu conhecimento está aquecendo e iluminando!";
+      } else if (pontuacao === 60) {
+        mensagemFinal = "Sua energia agora abastece um pequeno bairro! Continue assim, você está fazendo a diferença!";
+      } else if (pontuacao === 80) {
+        mensagemFinal = "Incrível! Sua capacidade já consegue energizar uma pequena indústria ou um hospital! Seu conhecimento tem grande impacto!";
+      } else if (pontuacao === 100) {
+        mensagemFinal = "Parabéns! Você é uma verdadeira usina de sabedoria, capaz de iluminar uma cidade inteira com seu conhecimento em energia!";
+      } else {
+        // Mensagem padrão caso a pontuação não seja um dos valores exatos (improvável com a lógica atual)
+        mensagemFinal = `Quiz finalizado! Você fez ${pontuacao} pontos.`;
+      }
+
+      const totalPossivel = perguntas.length * 20;
+      finalMessageDiv.textContent = mensagemFinal;
+      finalScoreDiv.textContent = `Sua pontuação: ${pontuacao} de ${totalPossivel} pontos.`;
+
+      quizContainer.classList.add("hidden"); // Esconde o quiz
+      resultsContainer.classList.remove("hidden"); // Mostra os resultados
+
+      // Coleta os dados salvos e a pontuação final
+      const nomeSalvo = localStorage.getItem("quiz_nome") || "N/A";
+      const afiliacaoSalva = localStorage.getItem("quiz_afiliacao") || "N/A";
+      const associacaoSalva = localStorage.getItem("quiz_associacao") || "N/A";
+
+      // Envia os dados para o seu endpoint do Google Apps Script Web App
+      const formspreeEndpoint = 'https://script.google.com/macros/s/AKfycbwl3Wvxvam7UFjZaaOSViSQTAHOjX65nqQ1q0sATudOqVCdVQwW0UOHG0ELbCNIKKX3XA/exec'; // SUBSTITUA PELA SUA URL
+
+      fetch(formspreeEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json' // Adicionado para melhor compatibilidade com Formspree
+        },
+        // O Google Apps Script espera os dados como uma string no corpo,
+        // não necessariamente como um objeto JSON nomeado 'body' dentro de outro objeto.
+        body: JSON.stringify({
+          Nome: nomeSalvo,
+          Afiliação: afiliacaoSalva, // Mantendo o acento para consistência com o placeholder
+          Associação: associacaoSalva, // Mantendo o acento
+          Pontuação: `${pontuacao}/${totalPossivel}`
+        })
+      })
+      .then(response => response.json()) // Processa a resposta JSON do Google Apps Script
+      .then(data => {
+        if (data.result === "success") {
+          console.log('Dados enviados com sucesso para Google Sheets:', data);
+        } else {
+          console.error('Erro ao enviar dados para Google Sheets (resposta do script):', data.error);
+        }
+      })
+      .catch(error => console.error('Erro na requisição fetch para Google Sheets:', error));
+
+
+      return;
+    }
+
+    const pergunta = perguntas[indiceAtual];
+    const containerPergunta = document.getElementById("pergunta");
+    const containerOpcoes = document.getElementById("opcoes");
+
+    containerPergunta.textContent = pergunta.texto;
+    containerOpcoes.innerHTML = "";
+
+    pergunta.opcoes.forEach((opcao, index) => {
+      const div = document.createElement("div");
+      div.className = "option";
+      div.textContent = opcao;
+      div.onclick = () => verificarResposta(div, index);
+      containerOpcoes.appendChild(div);
+    });
+tempoRestante = 10; // segundos
+let tempoTotal = tempoRestante * 10; // 100 passos de 100ms
+let progresso = 100;
+const barra = document.getElementById("timer-bar");
+barra.style.width = "100%";
+
+cronometro = setInterval(() => {
+  tempoTotal--;
+  progresso = (tempoTotal / (10 * 10)) * 100;
+  barra.style.width = `${progresso}%`;
+
+  if (tempoTotal <= 0) {
+    clearInterval(cronometro);
+    mostrarCorreta(null);
+  }
+}, 100);
+  }
+
+  function mostrarCorreta(respondidoIndex) {
+  const correta = perguntas[indiceAtual].correta;
+  const opcoes = document.querySelectorAll(".option");
+
+  opcoes.forEach((opcao, i) => {
+    // Aplica a classe correta ou esconde as erradas
+    if (i === correta) {
+      opcao.classList.add("correct");
+    } else {
+      opcao.classList.add("fade-out"); // Usa a classe de transição
+    }
+
+    opcao.classList.add("disabled");
+  });
+
+  if (respondidoIndex !== null && respondidoIndex !== correta) {
+    opcoes[respondidoIndex].classList.add("wrong");
+  }
+
+  setTimeout(() => {
+    indiceAtual++;
+    mostrarPergunta();
+  }, 2500); // Tempo para ver a resposta antes de ir para a próxima
+}
+
+  function verificarResposta(divSelecionada, index) {
+    clearInterval(cronometro);
+    const correta = perguntas[indiceAtual].correta;
+    const opcoes = document.querySelectorAll(".option");
+
+    if (index === correta) {
+      pontuacao += 20;
+    }
+
+    opcoes.forEach((opcao, i) => {
+      if (i === correta) {
+        opcao.classList.add("correct");
+      }
+
+      if (opcao !== divSelecionada && i !== correta) {
+        opcao.classList.add("fade-out");
+      }
+
+      opcao.classList.add("disabled");
+    });
+
+    if (index !== correta) {
+      divSelecionada.classList.add("wrong");
+    }
+
+    setTimeout(() => {
+      indiceAtual++;
+      mostrarPergunta();
+    }, 2500);
+  }
+
+  // Nova função para reiniciar o quiz
+  function restartQuiz() {
+    const introScreen = document.getElementById("intro");
+    const resultsContainer = document.getElementById("results-container");
+
+    resultsContainer.classList.add("hidden"); // Esconde a tela de resultados
+    introScreen.classList.remove("hidden"); // Mostra a tela inicial
+    // As variáveis indiceAtual e pontuacao são resetadas em startQuiz()
+  }
+</script>
+</body>
+</html>
