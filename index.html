@@ -212,6 +212,15 @@
         max-width: 200px; /* Ajuste o tamanho do QR Code para telas menores */
       }
     }
+
+    /* Permitir rolagem em modo de tela cheia */
+    html:fullscreen,
+    html:-webkit-full-screen,
+    html:-moz-full-screen,
+    html:-ms-full-screen {
+      overflow-y: auto !important; /* Garante que a rolagem vertical seja possível */
+    }
+
   </style>
 </head>
 <body>
