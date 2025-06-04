@@ -81,10 +81,10 @@
       transition: background-color 0.4s ease, opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
     }
 
-    .option:nth-child(1) { background-color: #244ca4; }
-    .option:nth-child(2) { background-color: #f8b414; }
-    .option:nth-child(3) { background-color: #e8442c; }
-    .option:nth-child(4) { background-color: #207c2c; }
+    .option:nth-child(1) { background-color: #5A85A9; }
+    .option:nth-child(2) { background-color: #ffda89; }
+    .option:nth-child(3) { background-color: #FD8A8A; }
+    .option:nth-child(4) { background-color: #B6CFB6; }
     .option:nth-child(5) { background-color: #984494; }
 
     .option.correct {
@@ -92,7 +92,7 @@
     }
 
     .option.wrong {
-      background-color: rgb(129, 123, 123) !important;
+      background-color: rgb(223, 17, 17) !important;
     }
 
     .option.disabled {
@@ -278,7 +278,7 @@
 
   const perguntas = [
     {
-      texto: "\"Transição energética\" refere-se a:",
+      texto: "Transição energética refere-se a:",
       opcoes: [
         "Mudar de energia elétrica para vapor",
         "Reduzir gastos familiares com energia",
@@ -298,7 +298,7 @@
       correta: 2
     },
     {
-      texto: "Em 2023, o Piauí foi o __ maior produtor de energia eólica no Brasil.",
+      texto: "Em 2024, o Piauí foi o __ maior produtor de energia eólica no Brasil.",
       opcoes: [
         "1º",
         "2º",
@@ -313,7 +313,7 @@
       correta: 1 // Mantém b) Níquel
     },
     {
-      texto: "Função principal de níquel, cobalto e terras raras na transição energética:",
+      texto: "Função principal do níquel, cobalto e terras raras na transição energética:",
       opcoes: ["Gerar energia em termelétricas", "Fabricar turbinas eólicas e baterias", "Combustível para motores a combustão", "Fertilizantes para agricultura"],
       correta: 1 // Mantém b) Fabricar turbinas eólicas e baterias
     },
@@ -446,10 +446,11 @@
     }
 
     const pergunta = perguntas[indiceAtual];
-    const containerPergunta = document.getElementById("pergunta");
-    const containerOpcoes = document.getElementById("opcoes");
+const containerPergunta = document.getElementById("pergunta");
+const containerOpcoes = document.getElementById("opcoes");
 
-    containerPergunta.textContent = pergunta.texto;
+containerPergunta.innerHTML = `<strong>${pergunta.texto}</strong>`;
+
     containerOpcoes.innerHTML = "";
 
     pergunta.opcoes.forEach((opcao, index) => {
