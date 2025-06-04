@@ -104,6 +104,18 @@
       opacity: 0;
     }
 
+    #fullscreen-button {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      width: 30px; /* Tamanho menor */
+      height: 30px; /* Tamanho menor */
+      padding: 0; /* Remover padding padrão */
+      border-radius: 5px; /* Cantos levemente arredondados */
+      background-color: rgba(30, 129, 176, 0.7); /* Cor com transparência */
+      z-index: 1000; /* Garantir que fique acima de outros elementos */
+    }
+
     .results-container {
       max-width: 600px;
       margin: auto;
@@ -193,6 +205,13 @@
       #final-message { font-size: 1.1em; }
       #final-score { font-size: 1.2em; font-weight: bold; }
     }
+
+    /* Ajuste para o QR Code em telas menores se necessário */
+    @media (max-width: 600px) {
+      #qr-code-container img {
+        max-width: 200px; /* Ajuste o tamanho do QR Code para telas menores */
+      }
+    }
   </style>
 </head>
 <body>
@@ -225,6 +244,10 @@
   </div>
   <button onclick="restartQuiz()">Próximo Jogador</button>
 </div>
+
+<!-- Botão de Tela Cheia -->
+<button id="fullscreen-button" onclick="toggleFullscreen()">&#x26F6;</button> <!-- Ícone de tela cheia -->
+
 
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
@@ -529,6 +552,23 @@
     document.getElementById("afiliacao").value = "";
     document.getElementById("instituicao").value = "";
   }
+
+  // Função para alternar tela cheia
+  function toggleFullscreen() {
+    const doc = document.documentElement;
+    if (document.fullscreenElement) {
+      // Se já estiver em tela cheia, sair
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    } else {
+      // Se não estiver em tela cheia, entrar
+      if (doc.requestFullscreen) {
+        doc.requestFullscreen();
+      }
+    }
+  }
+
 </script>
 </body>
 </html>
