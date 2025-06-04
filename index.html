@@ -246,18 +246,18 @@
 
   const perguntas = [
     {
-      texto: "Quando falamos em \"transição energética\", estamos nos referindo a:",
+      texto: "\"Transição energética\" refere-se a:",
       opcoes: [
-        "A mudança do uso de energia elétrica para energia a vapor",
-        "A redução de gastos com energia pelas famílias",
-        "A substituição de fontes fósseis por fontes renováveis e sustentáveis",
-        "O aumento do uso de carvão e petróleo no sistema elétrico",
-        "A manutenção da matriz energética atual com foco em eficiência energética"
+        "Mudar de energia elétrica para vapor",
+        "Reduzir gastos familiares com energia",
+        "Substituir fósseis por renováveis/sustentáveis",
+        "Aumentar uso de carvão/petróleo",
+        "Manter matriz atual, focar em eficiência"
       ],
       correta: 2
     },
     {
-      texto: "Qual porcentagem da matriz elétrica do Piauí é composta por fontes renováveis (eólica e solar)?",
+      texto: "Qual porcentagem da matriz elétrica do Piauí de fontes renováveis (eólica/solar)?",
       opcoes: [
         "75%",
         "90%",
@@ -276,27 +276,27 @@
         "4º",
         "5º"
       ],
-      correta: 2
+      correta: 2 // Mantém c) 3º
     },
     {
       texto: "Qual desses minerais estratégicos para a transição energética possui reservas significativas no Piauí:",
       opcoes: ["Lítio", "Níquel", "Terras raras", "Carvão", "Cobalto"],
-      correta: 1
+      correta: 1 // Mantém b) Níquel
     },
     {
-      texto: "Qual é a principal função dos minerais como níquel, cobalto e terras raras na transição energética?",
-      opcoes: ["Geração de energia em termelétricas", "Fabricação de turbinas eólicas e baterias para armazenamento", "Combustível para motores a combustão", "Fertilizantes para agricultura sustentável", "Produção de painéis solares fotovoltaicos"],
-      correta: 1
+      texto: "Função principal de níquel, cobalto e terras raras na transição energética:",
+      opcoes: ["Gerar energia em termelétricas", "Fabricar turbinas eólicas e baterias", "Combustível para motores a combustão", "Fertilizantes para agricultura", "Produzir painéis solares"],
+      correta: 1 // Mantém b) Fabricar turbinas eólicas e baterias
     },
     {
       texto: "Qual mineral é de importância estratégica para a segurança alimentar do Brasil, sendo um insumo essencial para a agricultura?",
       opcoes: ["Terras Raras", "Urânio", "Fosfato", "Grafita", "Potássio"],
-      correta: 2
+      correta: 2 // Mantém c) Fosfato
     }
   ];
 
   let indiceAtual = 0;
-  let tempoRestante = 17;
+  let tempoRestante = 22; // Tempo alterado para 22 segundos
   let cronometro;
   let pontuacao = 0;
   let db; // Variável para a instância do Firestore
@@ -431,7 +431,7 @@
       containerOpcoes.appendChild(div);
     });
 
-    tempoRestante = 17;
+    tempoRestante = 22;
     let tempoTotal = tempoRestante * 10;
     let progresso = 100;
     const barra = document.getElementById("timer-bar");
