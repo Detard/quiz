@@ -187,10 +187,11 @@
 <div class="intro" id="intro">
   <img src="images/logo.png" alt="Logo" id="quiz-logo">
   <h1>Quiz de Energia e Mineração</h1>
-  <input id="nome" type="text" placeholder="Nome*">
+  <input id="nome" type="text" placeholder="Nome completo*">
+  <input id="email" type="email" placeholder="E-mail">
   <input id="afiliacao" type="text" placeholder="Cargo">
-  <input id="associacao" type="text" placeholder="Associação">
-  <button onclick="startQuiz()">Iniciar Quiz</button>
+  <input id="instituicao" type="text" placeholder="Instituição*">
+  <button onclick="startQuiz()">Iniciar Quiz</button> 
 </div>
 
 <div class="quiz-container hidden" id="quiz">
@@ -228,29 +229,52 @@
 
   const perguntas = [
     {
-      texto: "Por que transmitir energia em alta tensão?",
-      opcoes: ["Aumenta a velocidade", "Evita perdas por calor", "É mais segura", "Usa cabos baratos", "Facilita o consumo direto pelas residências"],
-      correta: 1
-    },
-    {
-      texto: "Para que servem as subestações?",
-      opcoes: ["Armazenar energia", "Gerar eletricidade", "Ajustar a tensão", "Trocar corrente", "Purificar a energia de impurezas"],
+      texto: "Quando falamos em \"transição energética\", estamos nos referindo a:",
+      opcoes: [
+        "A mudança do uso de energia elétrica para energia a vapor",
+        "A redução de gastos com energia pelas famílias",
+        "A substituição de fontes fósseis por fontes renováveis e sustentáveis",
+        "O aumento do uso de carvão e petróleo no sistema elétrico",
+        "A manutenção da matriz energética atual com foco em eficiência energética"
+      ],
       correta: 2
     },
     {
-      texto: "O que avaliar ao planejar uma usina?",
-      opcoes: ["Cor da vegetação", "Proximidade da empresa", "Impacto ambiental e social", "Clube dos engenheiros", "Apenas o custo inicial de construção"],
+      texto: "Qual porcentagem da matriz elétrica do Piauí é composta por fontes renováveis (eólica e solar)?",
+      opcoes: [
+        "75%",
+        "90%",
+        "99,75%",
+        "100%",
+        "85,5%"
+      ],
+      correta: 3
+    },
+    {
+      texto: "Em 2023, o Piauí foi o __ maior produtor de energia eólica no Brasil.",
+      opcoes: [
+        "1º",
+        "2º",
+        "3º",
+        "4º",
+        "5º"
+      ],
       correta: 2
     },
     {
-      texto: "Qual o papel dos minerais na transição energética?",
-      opcoes: ["Gerar energia diretamente a partir de sua combustão", "Aumentar o consumo de energia em indústrias", "Fabricar tecnologias como baterias e painéis solares", "Reduzir o uso de água nas usinas", "Substituir combustíveis fósseis nas usinas"],
-      correta: 2 // Ajustado para a opção C, que parece mais correta. Se a intenção era A, mude para 0.
+      texto: "Qual desses minerais estratégicos para a transição energética possui reservas significativas no Piauí:",
+      opcoes: ["Lítio", "Níquel", "Terras raras", "Carvão", "Cobalto"],
+      correta: 1
     },
     {
-      texto: "Qual desses minerais é essencial para a fabricação de baterias recarregáveis em veículos elétricos?",
-      opcoes: ["Urânio", "Lítio", "Carvão", "Ferro", "Quartzo"],
+      texto: "Qual é a principal função dos minerais como níquel, cobalto e terras raras na transição energética?",
+      opcoes: ["Geração de energia em termelétricas", "Fabricação de turbinas eólicas e baterias para armazenamento", "Combustível para motores a combustão", "Fertilizantes para agricultura sustentável", "Produção de painéis solares fotovoltaicos"],
       correta: 1
+    },
+    {
+      texto: "Qual mineral é de importância estratégica para a segurança alimentar do Brasil, sendo um insumo essencial para a agricultura?",
+      opcoes: ["Terras Raras", "Urânio", "Fosfato", "Grafita", "Potássio"],
+      correta: 2
     }
   ];
 
@@ -283,17 +307,23 @@
 
   function startQuiz() {
     const nome = document.getElementById("nome").value.trim();
+    const email = document.getElementById("email").value.trim();
     const afiliacao = document.getElementById("afiliacao").value.trim();
-    const associacao = document.getElementById("associacao").value.trim();
+    const instituicao = document.getElementById("instituicao").value.trim();
 
     if (!nome) {
-      alert("Por favor, digite seu nome.");
+      alert("Por favor, digite seu nome completo.");
+      return;
+    }
+    if (!instituicao) {
+      alert("Por favor, digite sua instituição.");
       return;
     }
 
     localStorage.setItem("quiz_nome", nome);
+    localStorage.setItem("quiz_email", email);
     localStorage.setItem("quiz_afiliacao", afiliacao);
-    localStorage.setItem("quiz_associacao", associacao);
+    localStorage.setItem("quiz_instituicao", instituicao);
 
     document.getElementById("intro").classList.add("hidden");
     document.getElementById("quiz").classList.remove("hidden");
@@ -325,6 +355,8 @@
         mensagemFinal = "Incrível! Sua capacidade já consegue energizar uma pequena indústria ou um hospital! Seu conhecimento tem grande impacto!";
       } else if (pontuacao === 100) {
         mensagemFinal = "Parabéns! Você é uma verdadeira usina de sabedoria, capaz de iluminar uma cidade inteira com seu conhecimento em energia!";
+      } else if (pontuacao === 120) {
+        mensagemFinal = "UAU! Você atingiu a capacidade máxima! Seu conhecimento é tão vasto quanto o potencial energético do Piauí! Parabéns, Mestre da Energia e Mineração!";
       } else {
         mensagemFinal = `Quiz finalizado! Você fez ${pontuacao} pontos.`;
       }
@@ -337,15 +369,17 @@
       resultsContainer.classList.remove("hidden");
 
       const nomeSalvo = localStorage.getItem("quiz_nome") || "N/A";
+      const emailSalvo = localStorage.getItem("quiz_email") || "N/A";
       const afiliacaoSalva = localStorage.getItem("quiz_afiliacao") || "N/A";
-      const associacaoSalva = localStorage.getItem("quiz_associacao") || "N/A";
+      const instituicaoSalva = localStorage.getItem("quiz_instituicao") || "N/A";
 
       // ***** INÍCIO DA MODIFICAÇÃO PARA FIREBASE *****
       if (db) { // Verifica se o Firestore (db) foi inicializado
         db.collection("resultadosQuiz").add({ // "resultadosQuiz" será o nome da sua coleção
             Nome: nomeSalvo,
-            Afiliação: afiliacaoSalva, // Mantendo o nome do campo como no seu código original
-            Associação: associacaoSalva,
+            Email: emailSalvo,
+            Cargo: afiliacaoSalva, 
+            Instituicao: instituicaoSalva,
             Pontuação: `${pontuacao}/${totalPossivel}`,
             Timestamp: firebase.firestore.FieldValue.serverTimestamp() // Adiciona um timestamp do servidor
         })
@@ -474,8 +508,9 @@
     // As variáveis indiceAtual e pontuacao são resetadas em startQuiz()
     // Também é bom limpar os campos do formulário se desejar
     document.getElementById("nome").value = "";
+    document.getElementById("email").value = "";
     document.getElementById("afiliacao").value = "";
-    document.getElementById("associacao").value = "";
+    document.getElementById("instituicao").value = "";
   }
 </script>
 </body>
