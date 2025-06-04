@@ -63,6 +63,7 @@
 
     .question {
       font-size: 20px;
+      color: black;
       margin: 20px 0;
     }
 
@@ -75,7 +76,7 @@
     .option {
       padding: 15px;
       border-radius: 10px;
-      color: white;
+      color: black;
       cursor: pointer;
       font-size: 16px;
       transition: background-color 0.4s ease, opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
@@ -580,25 +581,14 @@ containerPergunta.innerHTML = `<strong>${pergunta.texto}</strong>`;
   }
 
   // Função para alternar tela cheia
-  function isMobileDevice() {
-  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-}
-
-function toggleFullscreen() {
+  function toggleFullscreen() {
   const doc = document.documentElement;
-  if (isMobileDevice()) {
-    alert("Tela cheia desativada no modo móvel para melhor uso do teclado.");
-    return;
-  }
-
   if (document.fullscreenElement) {
-    // Se já estiver em tela cheia, sair
-    if (document.exitFullscreen) { // Verifica se o método existe
+    if (document.exitFullscreen) {
       document.exitFullscreen();
     }
   } else {
-    // Se não estiver em tela cheia, entrar
-    if (doc.requestFullscreen) { // Verifica se o método existe
+    if (doc.requestFullscreen) {
       doc.requestFullscreen();
     }
   }
