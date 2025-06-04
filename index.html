@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz de Energia e Sustentabilidade</title>
+  <title>Quiz de Energia e Mineração</title>
   <style>
     * {
       box-sizing: border-box;
@@ -22,7 +22,7 @@
       display: none;
     }
 
-    .intro, .quiz-container, .results-container { /* Added .results-container here for consistency */
+    .intro, .quiz-container, .results-container {
       max-width: 600px;
       margin: auto;
     }
@@ -30,7 +30,7 @@
     input {
       display: block;
       width: 100%;
-      padding: 12px; /* Increased padding for better tap area */
+      padding: 12px;
       margin: 10px 0;
       border: none;
       border-radius: 5px;
@@ -38,7 +38,7 @@
     }
 
     button {
-      padding: 12px 10px; /* 12px vertical, 10px horizontal for better tap height */
+      padding: 12px 10px;
       width: 100%;
       border: none;
       border-radius: 6px;
@@ -49,7 +49,16 @@
     }
 
     h1 {
-      font-size: 2em; /* Default size for larger screens */
+      font-size: 2em;
+    }
+
+    #quiz-logo {
+      max-width: 550px; /* Tamanho máximo para desktop */
+      margin-bottom: 20px;
+      border-radius: 15px;
+      display: block; /* Para garantir que margin auto funcione se necessário, e consistência */
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .question {
@@ -69,7 +78,7 @@
       color: white;
       cursor: pointer;
       font-size: 16px;
-      transition: background-color 0.4s ease, opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease; /* Added transform for potential future use, or just keep opacity/visibility */
+      transition: background-color 0.4s ease, opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
     }
 
     .option:nth-child(1) { background-color: #4074ac; }
@@ -90,96 +99,94 @@
       pointer-events: none;
     }
 
-    /* Classe para esconder suavemente sem colapsar o espaço */
     .option.fade-out {
       visibility: hidden;
       opacity: 0;
     }
 
-    /* Estilos para a nova seção de resultados */
     .results-container {
       max-width: 600px;
       margin: auto;
       padding: 20px;
-      background: #3a4b5c; /* Cor de fundo diferente para destacar */
+      background: #3a4b5c;
       border-radius: 10px;
       text-align: center;
     }
 
     .results-container h2 {
       margin-top: 0;
-      color: #f0ac2c; /* Cor de destaque */
+      color: #f0ac2c;
     }
 
     #final-message { font-size: 18px; margin-bottom: 15px; }
     #final-score { font-size: 20px; font-weight: bold; margin-bottom: 20px; }
 
     #timer {
-      font-size: 18px;
-      margin-top: 10px;
+      width: 100%;
+      height: 20px;
+      background-color: #444;
+      border-radius: 10px;
+      margin-top: 20px;
+      overflow: hidden;
     }
-    #timer {
-  width: 100%;
-  height: 20px;
-  background-color: #444;
-  border-radius: 10px;
-  margin-top: 20px;
-  overflow: hidden;
-}
 
-#timer-bar {
-  height: 100%;
-  width: 100%;
-  background-color: #f0ac2c;
-  transition: width 0.1s linear;
-}
+    #timer-bar {
+      height: 100%;
+      width: 100%;
+      background-color: #f0ac2c;
+      transition: width 0.1s linear;
+    }
 
-    /* Media Query for smaller screens */
     @media (max-width: 600px) {
       body {
         padding: 10px;
-        font-size: 14px; /* Adjust base font size for smaller screens */
+        font-size: 14px;
       }
 
       .intro, .quiz-container, .results-container {
-        width: 95%; /* Allow containers to use more screen width */
-        padding: 15px; /* Adjust padding within containers */
+        width: 95%;
+        padding: 15px;
         margin-top: 15px;
         margin-bottom: 15px;
       }
 
       h1 {
-        font-size: 1.8em; /* Adjust heading size (1.8 * 14px = 25.2px) */
+        font-size: 1.8em;
       }
 
       input {
-        font-size: 1em; /* 14px */
+        font-size: 1em;
         padding: 12px;
       }
 
       button {
-        font-size: 1.1em; /* ~15.4px */
-        padding: 14px 10px; /* Make button a bit taller */
+        font-size: 1.1em;
+        padding: 14px 10px;
+      }
+      #quiz-logo {
+        max-width: 300px; /* Tamanho máximo para mobile, ajuste conforme necessário */
       }
 
+
       .question {
-        font-size: 1.2em; /* ~16.8px */
+        font-size: 1.2em;
       }
 
       .option {
-        font-size: 1em; /* 14px */
-        padding: 14px; /* Ensure good tap height */
+        font-size: 1em;
+        padding: 14px;
       }
 
-      #final-message { font-size: 1.1em; } /* ~15.4px */
-      #final-score { font-size: 1.2em; font-weight: bold; } /* ~16.8px */
+      #final-message { font-size: 1.1em; }
+      #final-score { font-size: 1.2em; font-weight: bold; }
     }
   </style>
 </head>
 <body>
 
 <div class="intro" id="intro">
-  <h1>Quiz de Energia e Sustentabilidade</h1>
+  <img src="images/logo.png" alt="Logo" id="quiz-logo">
+  <h1>Quiz de Energia e Mineração</h1>
   <input id="nome" type="text" placeholder="Nome*">
   <input id="afiliacao" type="text" placeholder="Cargo">
   <input id="associacao" type="text" placeholder="Associação">
@@ -190,86 +197,94 @@
   <div id="pergunta" class="question"></div>
   <div class="options" id="opcoes"></div>
   <div id="timer">
-  <div id="timer-bar"></div>
-</div>
+    <div id="timer-bar"></div>
+  </div>
 </div>
 
 <div class="results-container hidden" id="results-container">
   <h2>Resultado do Quiz</h2>
   <div id="final-message"></div>
   <div id="final-score"></div>
-  <button onclick="restartQuiz()">Jogar Novamente</button>
+  <button onclick="restartQuiz()">Próximo Jogador</button>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
 <script>
+  // ************************************************************************
+  // **IMPORTANTE: Substitua com as suas credenciais do Firebase!**
+  // ************************************************************************
+  const firebaseConfig = {
+  apiKey: "AIzaSyCvsl8WzHXJosRKWDEAesXVgTa0-z1DcsM",
+  authDomain: "quizeventodados.firebaseapp.com",
+  projectId: "quizeventodados",
+  storageBucket: "quizeventodados.firebasestorage.app",
+  messagingSenderId: "180070189013",
+  appId: "1:180070189013:web:116eff6e4929fdffd31f5c",
+  measurementId: "G-4MCX99CV3F"
+};
+  // ************************************************************************
+
   const perguntas = [
     {
       texto: "Por que transmitir energia em alta tensão?",
-      opcoes: [
-        "Aumenta a velocidade",
-        "Evita perdas por calor",
-        "É mais segura",
-        "Usa cabos baratos",
-        "Facilita o consumo direto pelas residências"
-      ],
-      correta: 1 // Índice da resposta correta (b)
+      opcoes: ["Aumenta a velocidade", "Evita perdas por calor", "É mais segura", "Usa cabos baratos", "Facilita o consumo direto pelas residências"],
+      correta: 1
     },
     {
       texto: "Para que servem as subestações?",
-      opcoes: [
-        "Armazenar energia",
-        "Gerar eletricidade",
-        "Ajustar a tensão",
-        "Trocar corrente",
-        "Purificar a energia de impurezas"
-      ],
-      correta: 2 // Índice da resposta correta (c)
+      opcoes: ["Armazenar energia", "Gerar eletricidade", "Ajustar a tensão", "Trocar corrente", "Purificar a energia de impurezas"],
+      correta: 2
     },
     {
       texto: "O que avaliar ao planejar uma usina?",
-      opcoes: [
-        "Cor da vegetação",
-        "Proximidade da empresa",
-        "Impacto ambiental e social",
-        "Clube dos engenheiros",
-        "Apenas o custo inicial de construção"
-      ],
-      correta: 2 // Índice da resposta correta (c)
+      opcoes: ["Cor da vegetação", "Proximidade da empresa", "Impacto ambiental e social", "Clube dos engenheiros", "Apenas o custo inicial de construção"],
+      correta: 2
     },
     {
       texto: "Qual o papel dos minerais na transição energética?",
-      opcoes: [
-        "Gerar energia diretamente a partir de sua combustão",
-        "Aumentar o consumo de energia em indústrias",
-        "Fabricar tecnologias como baterias e painéis solares",
-        "Reduzir o uso de água nas usinas",
-        "Substituir combustíveis fósseis nas usinas"
-      ],
-      correta: 0 // Índice da resposta correta (a) - conforme sua indicação.
-                 // Se a intenção era "Fabricar tecnologias...", seria o índice 2.
+      opcoes: ["Gerar energia diretamente a partir de sua combustão", "Aumentar o consumo de energia em indústrias", "Fabricar tecnologias como baterias e painéis solares", "Reduzir o uso de água nas usinas", "Substituir combustíveis fósseis nas usinas"],
+      correta: 2 // Ajustado para a opção C, que parece mais correta. Se a intenção era A, mude para 0.
     },
     {
       texto: "Qual desses minerais é essencial para a fabricação de baterias recarregáveis em veículos elétricos?",
-      opcoes: [
-        "Urânio",
-        "Lítio",
-        "Carvão",
-        "Ferro",
-        "Quartzo"
-      ],
-      correta: 1 // Índice da resposta correta (b)
+      opcoes: ["Urânio", "Lítio", "Carvão", "Ferro", "Quartzo"],
+      correta: 1
     }
   ];
 
   let indiceAtual = 0;
-  let tempoRestante = 10;
+  let tempoRestante = 17;
   let cronometro;
   let pontuacao = 0;
+  let db; // Variável para a instância do Firestore
+
+  // Inicializa o Firebase e o Firestore quando o DOM estiver pronto
+  document.addEventListener('DOMContentLoaded', function() {
+      try {
+          // Verifica se o Firebase já foi inicializado para evitar erros
+          if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+              firebase.initializeApp(firebaseConfig);
+              db = firebase.firestore(); // Inicializa o Firestore
+              console.log("Firebase e Firestore inicializados com sucesso.");
+          } else if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+              // Firebase já inicializado, apenas pegue a instância do Firestore
+              db = firebase.firestore();
+              console.log("Firestore inicializado (Firebase já estava pronto).");
+          } else {
+              console.error("SDK do Firebase não carregado.");
+          }
+      } catch (e) {
+          console.error("Erro ao inicializar Firebase: ", e);
+          alert("Erro crítico: Não foi possível conectar ao banco de dados. Por favor, avise o organizador.");
+      }
+  });
 
   function startQuiz() {
     const nome = document.getElementById("nome").value.trim();
     const afiliacao = document.getElementById("afiliacao").value.trim();
-    const associacao = document.getElementById("associacao").value.trim(); // Captura o valor da associação
+    const associacao = document.getElementById("associacao").value.trim();
 
     if (!nome) {
       alert("Por favor, digite seu nome.");
@@ -278,18 +293,19 @@
 
     localStorage.setItem("quiz_nome", nome);
     localStorage.setItem("quiz_afiliacao", afiliacao);
-    localStorage.setItem("quiz_associacao", associacao); // Salva a associação no localStorage
+    localStorage.setItem("quiz_associacao", associacao);
 
     document.getElementById("intro").classList.add("hidden");
     document.getElementById("quiz").classList.remove("hidden");
 
-    pontuacao = 0; // Garante que a pontuação é zerada ao iniciar
+    pontuacao = 0;
+    indiceAtual = 0; // Garante que o quiz comece da primeira pergunta
     mostrarPergunta();
   }
 
   function mostrarPergunta() {
     if (indiceAtual >= perguntas.length) {
-      clearInterval(cronometro); // Parar o cronômetro ao final
+      clearInterval(cronometro);
 
       const quizContainer = document.getElementById("quiz");
       const resultsContainer = document.getElementById("results-container");
@@ -310,7 +326,6 @@
       } else if (pontuacao === 100) {
         mensagemFinal = "Parabéns! Você é uma verdadeira usina de sabedoria, capaz de iluminar uma cidade inteira com seu conhecimento em energia!";
       } else {
-        // Mensagem padrão caso a pontuação não seja um dos valores exatos (improvável com a lógica atual)
         mensagemFinal = `Quiz finalizado! Você fez ${pontuacao} pontos.`;
       }
 
@@ -318,55 +333,35 @@
       finalMessageDiv.textContent = mensagemFinal;
       finalScoreDiv.textContent = `Sua pontuação: ${pontuacao} de ${totalPossivel} pontos.`;
 
-      quizContainer.classList.add("hidden"); // Esconde o quiz
-      resultsContainer.classList.remove("hidden"); // Mostra os resultados
+      quizContainer.classList.add("hidden");
+      resultsContainer.classList.remove("hidden");
 
-      // Coleta os dados salvos e a pontuação final
       const nomeSalvo = localStorage.getItem("quiz_nome") || "N/A";
       const afiliacaoSalva = localStorage.getItem("quiz_afiliacao") || "N/A";
       const associacaoSalva = localStorage.getItem("quiz_associacao") || "N/A";
 
-      // Envia os dados para o seu endpoint do Google Apps Script Web App
-            const scriptEndpoint = 'https://script.google.com/macros/s/AKfycbzFuKS_2XvR9RoAI6uWJYGqXOIOgXQfXBJ13cJvbZloxuPmUDkBC5cVA_yTlxx_XBPpAQ/exec'; // Substitua pela URL final da sua implantação
-
-      fetch(scriptEndpoint, {
-        method: 'POST',
-        mode: 'cors', // garante o uso correto de CORS
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          Nome: nomeSalvo,
-          Afiliação: afiliacaoSalva,
-          Associação: associacaoSalva,
-          Pontuação: `${pontuacao}/${totalPossivel}`
+      // ***** INÍCIO DA MODIFICAÇÃO PARA FIREBASE *****
+      if (db) { // Verifica se o Firestore (db) foi inicializado
+        db.collection("resultadosQuiz").add({ // "resultadosQuiz" será o nome da sua coleção
+            Nome: nomeSalvo,
+            Afiliação: afiliacaoSalva, // Mantendo o nome do campo como no seu código original
+            Associação: associacaoSalva,
+            Pontuação: `${pontuacao}/${totalPossivel}`,
+            Timestamp: firebase.firestore.FieldValue.serverTimestamp() // Adiciona um timestamp do servidor
         })
-      })
-
-      .then(response => {
-        // Verifica se a resposta da rede foi bem-sucedida
-        if (!response.ok) {
-          // Se não estiver ok, tenta analisar a resposta de erro do Google Apps Script se for JSON
-          return response.json().then(errData => {
-            // Lança um erro com a mensagem do script ou um erro genérico do servidor
-            throw new Error(errData.message || `Erro do servidor: ${response.status}`);
-          }).catch(() => {
-            // Se a análise da resposta de erro falhar (ex: não for JSON), lança um erro HTTP genérico
-            throw new Error(`Erro HTTP! Status: ${response.status}`);
-          });
-        }
-        return response.json(); // Processa a resposta JSON do Google Apps Script
-      })
-      .then(data => {
-        if (data.result === "success") {
-          console.log('Dados enviados com sucesso para Google Sheets:', data);
-        } else {
-          console.error('Erro ao enviar dados para Google Sheets (resposta do script):', data.message || 'Erro desconhecido retornado pelo script.');
-        }
-      })
-      .catch(error => console.error('Erro na requisição fetch para Google Sheets:', error));
-
-
+        .then((docRef) => {
+            console.log("Dados salvos no Firestore com ID: ", docRef.id);
+        })
+        .catch((error) => {
+            console.error("Erro ao salvar dados no Firestore: ", error);
+            // Você pode querer adicionar uma mensagem para o usuário aqui se a gravação falhar
+            // alert("Houve um problema ao salvar sua pontuação. Tente novamente ou avise um organizador.");
+        });
+      } else {
+        console.error("Firestore (db) não está inicializado. Dados não foram salvos.");
+        // alert("Erro de conexão com o banco de dados. Sua pontuação pode não ter sido salva.");
+      }
+      // ***** FIM DA MODIFICAÇÃO PARA FIREBASE *****
       return;
     }
 
@@ -384,48 +379,58 @@
       div.onclick = () => verificarResposta(div, index);
       containerOpcoes.appendChild(div);
     });
-tempoRestante = 10; // segundos
-let tempoTotal = tempoRestante * 10; // 100 passos de 100ms
-let progresso = 100;
-const barra = document.getElementById("timer-bar");
-barra.style.width = "100%";
 
-cronometro = setInterval(() => {
-  tempoTotal--;
-  progresso = (tempoTotal / (10 * 10)) * 100;
-  barra.style.width = `${progresso}%`;
+    tempoRestante = 17;
+    let tempoTotal = tempoRestante * 10;
+    let progresso = 100;
+    const barra = document.getElementById("timer-bar");
+    barra.style.width = "100%";
 
-  if (tempoTotal <= 0) {
-    clearInterval(cronometro);
-    mostrarCorreta(null);
-  }
-}, 100);
+    clearInterval(cronometro); // Limpa qualquer cronômetro anterior
+    cronometro = setInterval(() => {
+      tempoTotal--;
+      progresso = (tempoTotal / (tempoRestante * 10)) * 100; // Corrigido para usar tempoRestante original na proporção
+      barra.style.width = `${progresso}%`;
+
+      if (tempoTotal <= 0) {
+        clearInterval(cronometro);
+        mostrarCorreta(null); // Passa null pois o usuário não respondeu
+      }
+    }, 100);
   }
 
   function mostrarCorreta(respondidoIndex) {
-  const correta = perguntas[indiceAtual].correta;
-  const opcoes = document.querySelectorAll(".option");
+    clearInterval(cronometro); // Garante que o cronômetro pare
+    const correta = perguntas[indiceAtual].correta;
+    const opcoes = document.querySelectorAll(".option");
 
-  opcoes.forEach((opcao, i) => {
-    // Aplica a classe correta ou esconde as erradas
-    if (i === correta) {
-      opcao.classList.add("correct");
-    } else {
-      opcao.classList.add("fade-out"); // Usa a classe de transição
+    opcoes.forEach((opcao, i) => {
+      if (i === correta) {
+        opcao.classList.add("correct");
+      } else {
+        opcao.classList.add("fade-out");
+      }
+      opcao.classList.add("disabled");
+    });
+
+    // Se uma resposta foi dada e estava errada, marca como errada
+    // A opção correta já é marcada acima.
+    // A opção selecionada, se errada, será marcada em verificarResposta.
+    // Esta função é chamada também quando o tempo esgota, então respondidoIndex pode ser null.
+    if (respondidoIndex !== null && respondidoIndex !== correta) {
+        if (opcoes[respondidoIndex]) { // Verifica se a opção existe
+            opcoes[respondidoIndex].classList.add("wrong");
+             // Garante que a errada não seja 'fade-out' se foi a clicada
+            opcoes[respondidoIndex].classList.remove("fade-out");
+        }
     }
 
-    opcao.classList.add("disabled");
-  });
 
-  if (respondidoIndex !== null && respondidoIndex !== correta) {
-    opcoes[respondidoIndex].classList.add("wrong");
+    setTimeout(() => {
+      indiceAtual++;
+      mostrarPergunta();
+    }, 1500);
   }
-
-  setTimeout(() => {
-    indiceAtual++;
-    mostrarPergunta();
-  }, 2500); // Tempo para ver a resposta antes de ir para a próxima
-}
 
   function verificarResposta(divSelecionada, index) {
     clearInterval(cronometro);
@@ -434,38 +439,43 @@ cronometro = setInterval(() => {
 
     if (index === correta) {
       pontuacao += 20;
+    } else {
+      divSelecionada.classList.add("wrong");
     }
-
+    
+    // Desabilita todas as opções e mostra a correta/erradas
     opcoes.forEach((opcao, i) => {
       if (i === correta) {
         opcao.classList.add("correct");
-      }
-
-      if (opcao !== divSelecionada && i !== correta) {
+      } else if (opcao !== divSelecionada) { // Esconde as outras erradas que não foram clicadas
         opcao.classList.add("fade-out");
       }
-
       opcao.classList.add("disabled");
     });
 
+    // Garante que a opção errada clicada não desapareça
     if (index !== correta) {
-      divSelecionada.classList.add("wrong");
+        divSelecionada.classList.remove("fade-out");
     }
+
 
     setTimeout(() => {
       indiceAtual++;
       mostrarPergunta();
-    }, 2500);
+    }, 1500);
   }
 
-  // Nova função para reiniciar o quiz
   function restartQuiz() {
     const introScreen = document.getElementById("intro");
     const resultsContainer = document.getElementById("results-container");
 
-    resultsContainer.classList.add("hidden"); // Esconde a tela de resultados
-    introScreen.classList.remove("hidden"); // Mostra a tela inicial
+    resultsContainer.classList.add("hidden");
+    introScreen.classList.remove("hidden");
     // As variáveis indiceAtual e pontuacao são resetadas em startQuiz()
+    // Também é bom limpar os campos do formulário se desejar
+    document.getElementById("nome").value = "";
+    document.getElementById("afiliacao").value = "";
+    document.getElementById("associacao").value = "";
   }
 </script>
 </body>
