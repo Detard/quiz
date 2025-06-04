@@ -221,7 +221,17 @@
       overflow-y: auto !important; /* Garante que a rolagem vertical seja possível */
     }
 
-  </style>
+  
+html, body {
+  height: 100%;
+  overflow-y: auto !important;
+}
+
+.intro {
+  height: auto;
+}
+
+</style>
 </head>
 <body>
 
@@ -332,6 +342,15 @@
 
   // Inicializa o Firebase e o Firestore quando o DOM estiver pronto
   document.addEventListener('DOMContentLoaded', function() {
+  // Garante rolagem ao focar nos inputs
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('focus', () => {
+      setTimeout(() => {
+        input.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 300); // atraso para o teclado abrir
+    });
+  });
+
       try {
           // Verifica se o Firebase já foi inicializado para evitar erros
           if (typeof firebase !== 'undefined' && !firebase.apps.length) {
@@ -561,20 +580,29 @@ containerPergunta.innerHTML = `<strong>${pergunta.texto}</strong>`;
   }
 
   // Função para alternar tela cheia
-  function toggleFullscreen() {
-    const doc = document.documentElement;
-    if (document.fullscreenElement) {
-      // Se já estiver em tela cheia, sair
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
-    } else {
-      // Se não estiver em tela cheia, entrar
-      if (doc.requestFullscreen) {
-        doc.requestFullscreen();
-      }
+  function isMobileDevice() {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+function toggleFullscreen() {
+  const doc = document.documentElement;
+  if (isMobileDevice()) {
+    alert("Tela cheia desativada no modo móvel para melhor uso do teclado.");
+    return;
+  }
+
+  if (document.fullscreenElement) {
+    // Se já estiver em tela cheia, sair
+    if (document.exitFullscreen) { // Verifica se o método existe
+      document.exitFullscreen();
+    }
+  } else {
+    // Se não estiver em tela cheia, entrar
+    if (doc.requestFullscreen) { // Verifica se o método existe
+      doc.requestFullscreen();
     }
   }
+}
 
 </script>
 </body>
